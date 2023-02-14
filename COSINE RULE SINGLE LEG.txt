@@ -1,0 +1,199 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
+
+#define SERVOMIN 150
+#define SERVOMAX 600
+#define ed "\n"
+#define pie 3.14159
+#define STOP 20
+#define MEX 250
+#define MIIN 10
+
+float a=130.0,b,c=130.0,A,B,C;
+
+uint8_t servonum = 0;
+
+void setup() {
+  Serial.begin(9600);
+  myServo.begin();
+  myServo.setPWMFreq(60);
+  delay(10);
+}
+
+void loop() {
+  for(float i=MIIN;i<MEX;i++){
+     setangle(i);  
+     move();
+  }
+  for(float i=MEX;i>MIIN;i--){
+     setangle(i);  
+     move();
+  }
+}
+
+void move(){
+  //TOPRIGHT
+  myServo.setPWM(0, 0, angleToPulse(B));
+  myServo.setPWM(1, 0, angleToPulse(A));
+  myServo.setPWM(2, 0, angleToPulse(C));
+
+  //TOPLEFT
+  myServo.setPWM(4, 0, angleToPulse(B));
+  myServo.setPWM(5, 0, angleToPulse(A));
+  myServo.setPWM(6, 0, angleToPulse(C));
+
+  
+}
+
+int angleToPulse(int ang){
+   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+   return pulse;
+}
+
+float getdegree(float r){
+    return r*(180.0/pie);
+}
+
+void setangle(float side){
+    b=side;
+
+    A=acos((pow(c,2)+pow(b,2)-pow(a,2))/(2*c*b));
+    A=getdegree(A);
+    A=floor(A)+70;
+
+    B=acos((pow(a,2)+pow(c,2)-pow(b,2))/(2*a*c));
+    B=getdegree(B);
+    B=B/2+30;
+
+    C=140;
+//    C=acos((pow(a,2)+pow(b,2)-pow(c,2))/(2*a*b));
+//    C=getdegree(C);
+}
+
+
+
+
+
+
+
+
+
+
+
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
+
+#define SERVOMIN 150
+#define SERVOMAX 600
+#define ed "\n"
+#define pie 3.14159
+#define STOP 20
+#define MEX 250
+#define MIIN 10
+
+float a=130.0,b,c=130.0,A,B,C;
+
+uint8_t servonum = 0;
+
+void setup() {
+  Serial.begin(9600);
+  myServo.begin();
+  myServo.setPWMFreq(60);
+  delay(10);
+}
+
+void loop() {
+  myServo.setPWM(0, 0, angleToPulse(45));//b
+  myServo.setPWM(1, 0, angleToPulse(90));//a
+  myServo.setPWM(2, 0, angleToPulse(C));
+}
+
+void move(){
+  //TOPRIGHT
+  myServo.setPWM(0, 0, angleToPulse(-B));
+  myServo.setPWM(1, 0, angleToPulse(180-A));
+  myServo.setPWM(2, 0, angleToPulse(C));
+
+  //TOPLEFT
+  myServo.setPWM(4, 0, angleToPulse(B));
+  myServo.setPWM(5, 0, angleToPulse(A));
+  myServo.setPWM(6, 0, angleToPulse(C));
+
+  
+}
+
+int angleToPulse(int ang){
+   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+   return pulse;
+}
+
+float getdegree(float r){
+    return r*(180.0/pie);
+}
+
+void setangle(float side){
+    b=side;
+
+    A=acos((pow(c,2)+pow(b,2)-pow(a,2))/(2*c*b));
+    A=getdegree(A);
+    A=floor(A);
+
+    B=acos((pow(a,2)+pow(c,2)-pow(b,2))/(2*a*c));
+    B=getdegree(B);
+    B=B/2;
+
+    C=140;
+//    C=acos((pow(a,2)+pow(b,2)-pow(c,2))/(2*a*b));
+//    C=getdegree(C);
+}
+
+
+
+//#include <Wire.h>
+//#include <Adafruit_PWMServoDriver.h>
+//
+//Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
+//
+//#define SERVOMIN 150
+//#define SERVOMAX 600
+//
+//uint8_t servonum = 0;
+//
+//void setup() {
+//  Serial.begin(9600);
+//  myServo.begin();
+//  myServo.setPWMFreq(60);
+//  delay(10);
+//}
+//
+//void loop() {
+//  for (uint16_t pulselen = angleToPulse(0); pulselen <  angleToPulse(90); pulselen++){
+//    myServo.setPWM(servonum, 0, pulselen);
+//  }
+//  delay(2000);
+//  Serial.println("90 deg");
+//  for (uint16_t pulselen =  angleToPulse(90); pulselen <  angleToPulse(180); pulselen++){
+//    myServo.setPWM(servonum, 0, pulselen);
+//  }
+//  Serial.println("180 deg");
+//  delay(2000);
+//  for (uint16_t pulselen =  angleToPulse(180); pulselen >  angleToPulse(90); pulselen--){
+//    myServo.setPWM(servonum, 0, pulselen);
+//  }
+//  Serial.println("90 deg");
+//  delay(2000);
+//  for (uint16_t pulselen =  angleToPulse(90); pulselen >  angleToPulse(0); pulselen--){
+//    myServo.setPWM(servonum, 0, pulselen);
+//  }
+//  Serial.println("0 deg");
+//  delay(2000);
+//  
+//}
+//int angleToPulse(int ang){
+//   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+//   return pulse;
+//}

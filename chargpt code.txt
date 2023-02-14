@@ -1,0 +1,69 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+#define SERVO_FL1 8
+#define SERVO_FL2 9
+#define SERVO_FL3 10
+#define SERVO_FR1 11
+#define SERVO_FR2 12
+#define SERVO_FR3 13
+#define SERVO_BL1 14
+#define SERVO_BL2 15
+#define SERVO_BL3 16
+#define SERVO_BR1 17
+#define SERVO_BR2 18
+#define SERVO_BR3 19
+
+int mapDegreeToPWM(int degree) {
+int pwm = map(degree, 0, 180, 150, 600);
+return pwm;
+}
+
+void setup() {
+Wire.begin();
+pwm.begin();
+pwm.setPWMFreq(60);
+}
+
+void stand() {
+  int angle = 90;
+
+  pwm.setPWM(SERVO_FL1, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_FL2, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_FL3, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_FR1, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_FR2, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_FR3, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_BL1, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_BL2, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_BL3, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_BR1, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_BR2, 0, mapDegreeToPWM(angle));
+  pwm.setPWM(SERVO_BR3, 0, mapDegreeToPWM(angle));
+}
+
+void doPushup(int cycle) {
+  float time = millis() / 1000.0;
+  int angle1 = (int)(30 * cos(2 * PI * time / cycle + PI) + 50);
+  int angle2 = (int)(80 * cos(2 * PI * time / cycle) + 50);
+  int angle3 = (int)(30 * cos(2 * PI * time / cycle - PI) + 50);
+
+  pwm.setPWM(SERVO_FL1, 0, mapDegreeToPWM(angle1));
+  pwm.setPWM(SERVO_FL2, 0, mapDegreeToPWM(angle2));
+  pwm.setPWM(SERVO_FL3, 0, mapDegreeToPWM(angle3));
+  pwm.setPWM(SERVO_FR1, 0, mapDegreeToPWM(angle1));
+  pwm.setPWM(SERVO_FR2, 0, mapDegreeToPWM(angle2));
+  pwm.setPWM(SERVO_FR3, 0, mapDegreeToPWM(angle3));
+  pwm.setPWM(SERVO_BL1, 0, mapDegreeToPWM(angle1));
+  pwm.setPWM(SERVO_BL2, 0, mapDegreeToPWM(angle2));
+  pwm.setPWM(SERVO_BL3, 0, mapDegreeToPWM(angle3));
+  pwm.setPWM(SERVO_BR1, 0, mapDegreeToPWM(angle1));
+  pwm.setPWM(SERVO_BR2, 0, mapDegreeToPWM(angle2));
+  pwm.setPWM(SERVO_BR3, 0, mapDegreeToPWM(angle3));
+}
+
+void loop() {
+  stand();
+}

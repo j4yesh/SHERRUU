@@ -1,0 +1,115 @@
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
+
+#define SERVOMIN 150
+#define SERVOMAX 600
+
+float a,b,c,A,B,C;
+
+uint8_t servonum = 0;
+
+void setup() {
+  Serial.begin(9600);
+  myServo.begin();
+  myServo.setPWMFreq(60);
+  delay(10);
+  c=150.0;
+  a=150.0;
+}
+
+void loop() {
+  drive(0,1);
+}
+
+void drive(int col,int top){
+  for(int i=0;i<46;i++){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+  for(int i=45;i<75;i++){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+  for(int i=74;i>44;i--){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+  for(int i=45;i>=0;i--){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulsae(i));
+  }
+  delay(500);
+}
+int getangle(int b){
+  return  acos((pow(a,2)+pow(c,2)-pow(b,2))/(2*a*c));
+}
+ 
+int angleToPulse(int ang){
+   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+   return pulse;
+}
+
+
+
+
+
+#include <Wire.h>
+#include <Servo.h>
+
+Servo myservo;
+
+Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
+
+#define SERVOMIN 150
+#define SERVOMAX 600
+
+float a,b,c,A,B,C;
+
+uint8_t servonum = 0;
+
+void setup() {
+  Serial.begin(9600);
+   myservo.attach(9);
+  c=150.0;
+  a=150.0;
+}
+
+void loop() {
+  drive(0,1);
+}
+
+void drive(int col,int top){
+  for(int i=0;i<46;i++){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+  for(int i=45;i<75;i++){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+  for(int i=74;i>44;i--){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+  for(int i=45;i>=0;i--){
+    myServo.setPWM(col, 0, angleToPulse(i));
+    myServo.setPWM(top, 0, angleToPulse(i));
+  }
+  delay(500);
+}
+int getangle(int b){
+  return  acos((pow(a,2)+pow(c,2)-pow(b,2))/(2*a*c));
+}
+ 
+int angleToPulse(int ang){
+   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
+   return pulse;
+}
