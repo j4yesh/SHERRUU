@@ -1,4 +1,3 @@
-
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
@@ -9,8 +8,8 @@ Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
 #define ed "\n"
 #define pie 3.14159
 #define STOP 20
-#define MEX 20
-#define MIIN -20
+#define MEX 18
+#define MIIN -18
 
 float a=130.0,b,c=130.0,A,B,C;
 
@@ -62,25 +61,25 @@ void pushup(){
 
 void move(int x){
   //TOPRIGHT
-  myServo.setPWM(0, 0, angleToPulse(35));//B
-  myServo.setPWM(1, 0, angleToPulse(35)); //A
-  myServo.setPWM(2, 0, angleToPulse(10));//C
+  myServo.setPWM(0, 0, angleToPulse(45+x));//B
+  myServo.setPWM(1, 0, angleToPulse(35-x)); //A
+  myServo.setPWM(2, 0, angleToPulse(25));//C
 
   //BOTTOMRIGHT // correct
-  myServo.setPWM(4, 0, angleToPulse(55));//B
-  myServo.setPWM(5, 0, angleToPulse(15));//A
-  myServo.setPWM(6, 0, angleToPulse(55));//C
+  myServo.setPWM(4, 0, angleToPulse(65+x));//B
+  myServo.setPWM(5, 0, angleToPulse(15-x));//A
+  myServo.setPWM(6, 0, angleToPulse(45));//C
 
   
-  //TOPLEFT //bottomleft
-  myServo.setPWM(8, 0, angleToPulse(35));//B
-  myServo.setPWM(9, 0, angleToPulse(115));//A
+  //bottomleft
+  myServo.setPWM(8, 0, angleToPulse(45-x));//B
+  myServo.setPWM(9, 0, angleToPulse(115+x));//A
   myServo.setPWM(10, 0, angleToPulse(90));//C
 
   
-  //BOTTOMLEFT top left
-  myServo.setPWM(12, 0, angleToPulse(25));//B
-  myServo.setPWM(13, 0, angleToPulse(115));//A
+  //top left
+  myServo.setPWM(12, 0, angleToPulse(45-x));//B
+  myServo.setPWM(13, 0, angleToPulse(95+x));//A
   myServo.setPWM(14, 0, angleToPulse(100));//C
   
 }
