@@ -80,7 +80,7 @@ void move(int x){
   //top left
   myServo.setPWM(12, 0, angleToPulse(45-x));//B
   myServo.setPWM(13, 0, angleToPulse(95+x));//A
-  myServo.setPWM(14, 0, angleToPulse(100));//C
+  myServo.setPWM(14, 0, angleToPulse(88));//C
   
 }
 
