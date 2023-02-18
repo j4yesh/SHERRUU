@@ -1,70 +1,3 @@
-#include<Wire.h>
-#include<Adafruit_PWMServoDriver.h>
-
-
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
-#define SERVOMIN  125 // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX  575 // this is the 'maximum' pulse length count (out of 4096)
-
-uint8_t servonum = 0;
-
-void setup() {
-  Serial.begin(9600);
-  pwm.begin();
-  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
-
-  //yield();
-}
-
-void loop() {
- 
-stand();
-delay(5000);
-//sit();
-//delay(5000);
-
-
-
-}
-
- int angleToPulse(int ang){
-   int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
-   Serial.print("Angle: ");Serial.print(ang);
-   Serial.print(" pulse: ");Serial.println(pulse);
-   return pulse;
-}
-
-void stand(){
-   pwm.setPWM(5, 0, angleToPulse(60) );//br 2
-  
- pwm.setPWM(3, 0, angleToPulse(50) );//br 1
-  //delay(500);
-
-  pwm.setPWM(4, 0, angleToPulse(45) );//br 3
- //delay(500);
-  pwm.setPWM(2, 0, angleToPulse(100) );//bl 1
- //delay(500);
-  pwm.setPWM(1, 0, angleToPulse(90) );//bl 2
- //delay(500);
-  pwm.setPWM(0, 0, angleToPulse(-90) );//bl 3
- //delay(500);
-  pwm.setPWM(9, 0, angleToPulse(100) );//fr 1
- //delay(500);
-  pwm.setPWM(7, 0, angleToPulse(50) );//fr 2
- //delay(500);
-  pwm.setPWM(8, 0, angleToPulse(180) );//fr 3
- //delay(500);
-  pwm.setPWM(14, 0, angleToPulse(50) );//fl 1
- //delay(500);
-  pwm.setPWM(13, 0, angleToPulse(95) );//fl 2
- //delay(500);
- pwm.setPWM(12, 0, angleToPulse(180) );//fl 3
-  }
-
-
-
-
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
@@ -72,6 +5,30 @@ Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
 
 #define SERVOMIN 150
 #define SERVOMAX 600
+#define ed "\n"
+#define pie 3.14159
+#define STOP 20
+#define MEX 18
+#define MIIN -18
+
+//ANGLE FOR EACH
+#define TR_B 55
+#define TR_A 35
+#define TR_C 70
+
+#define BR_B 55
+#define BR_A 15
+#define BR_C 55
+
+#define BL_B 45 //55
+#define BL_A 100
+#define BL_C 80
+
+#define TL_B 45
+#define TL_A 95
+#define TL_C 95
+
+float a=130.0,b,c=130.0,A,B,C;
 
 uint8_t servonum = 0;
 
@@ -82,30 +39,181 @@ void setup() {
   delay(10);
 }
 
-void loop() {
-  for (uint16_t pulselen = angleToPulse(0); pulselen <  angleToPulse(90); pulselen++){
-    myServo.setPWM(servonum, 0, pulselen);
+void loop() { 
+   pushup();
+//    equilibrium();
+//   movefront();
+//   for(float i=MIIN;i<MEX;i++){  
+//     delay(50);
+//     hpush(i);
+//  }
+//  for(float i=MEX;i>MIIN;i--){
+//     delay(50);
+//     hpush(i);
+//  }
+}
+
+void hpush(int x){
+     //TOPRIGHT
+  myServo.setPWM(0, 0, angleToPulse(TR_B +x));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A -x)); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+
+  //top left
+  myServo.setPWM(12, 0, angleToPulse(TL_B -x));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A +x));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
+
+  //BOTTOMRIGHT // correct
+  myServo.setPWM(4, 0, angleToPulse(BR_B -x));//B
+  myServo.setPWM(5, 0, angleToPulse(BR_A +x));//A
+  myServo.setPWM(6, 0, angleToPulse(BR_C));//C
+
+  
+  //bottomleft
+  myServo.setPWM(8, 0, angleToPulse(BL_B +x));//B
+  myServo.setPWM(9, 0, angleToPulse(BL_A -x));//A
+  myServo.setPWM(10, 0, angleToPulse(BL_C));//C
+
+  
+}
+
+void pushup(){
+   for(float i=MIIN;i<MEX;i++){  
+     delay(50);
+     pushup1(i);
   }
-  delay(2000);
-  Serial.println("90 deg");
-  for (uint16_t pulselen =  angleToPulse(90); pulselen <  angleToPulse(180); pulselen++){
-    myServo.setPWM(servonum, 0, pulselen);
+  for(float i=MEX;i>MIIN;i--){
+     delay(50);
+     pushup1(i);
   }
-  Serial.println("180 deg");
-  delay(2000);
-  for (uint16_t pulselen =  angleToPulse(180); pulselen >  angleToPulse(90); pulselen--){
-    myServo.setPWM(servonum, 0, pulselen);
+}
+
+void pushup1(int x){
+  //TOPRIGHT
+  myServo.setPWM(0, 0, angleToPulse(TR_B +x));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A -x)); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+
+  //BOTTOMRIGHT // correct
+  myServo.setPWM(4, 0, angleToPulse(BR_B +x));//B
+  myServo.setPWM(5, 0, angleToPulse(BR_A -x));//A
+  myServo.setPWM(6, 0, angleToPulse(BR_C));//C
+
+  
+  //bottomleft
+  myServo.setPWM(8, 0, angleToPulse(BL_B -x));//B
+  myServo.setPWM(9, 0, angleToPulse(BL_A +x));//A
+  myServo.setPWM(10, 0, angleToPulse(BL_C));//C
+
+  
+  //top left
+  myServo.setPWM(12, 0, angleToPulse(TL_B -x));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A +x));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
+  
+}
+void equilibrium(){
+    pushup1(0);
+}
+
+void movefront(){
+  //top left
+  myServo.setPWM(12, 0, angleToPulse(TL_B-15));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
+  delay(500);
+  myServo.setPWM(12, 0, angleToPulse(TL_B-15));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A-15));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
+  delay(500);
+  movethree();
+  myServo.setPWM(12, 0, angleToPulse(TL_B));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A+15));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
+  delay(500);
+  myServo.setPWM(12, 0, angleToPulse(TL_B));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
+  delay(500);
+  //TOPRIGHT
+  myServo.setPWM(0, 0, angleToPulse(TR_B -15));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A )); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+  delay(500);
+  myServo.setPWM(0, 0, angleToPulse(TR_B -15));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A -15)); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+  delay(500);
+  movethree2();
+  myServo.setPWM(0, 0, angleToPulse(TR_B ));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A +15)); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+  delay(500);
+  myServo.setPWM(0, 0, angleToPulse(TR_B ));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A)); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+  delay(500);
+}
+void movethree(){
+  for(int x=-15;x<=15;x+=15){
+    myServo.setPWM(0, 0, angleToPulse(TR_B));//B
+  myServo.setPWM(1, 0, angleToPulse(TR_A -x)); //A
+  myServo.setPWM(2, 0, angleToPulse(TR_C));//C
+  //BOTTOMRIGHT // correct
+  myServo.setPWM(4, 0, angleToPulse(BR_B));//B
+  myServo.setPWM(5, 0, angleToPulse(BR_A -x));//A
+  myServo.setPWM(6, 0, angleToPulse(BR_C));//C
+  
+  //bottomleft
+  myServo.setPWM(8, 0, angleToPulse(BL_B));//B
+  myServo.setPWM(9, 0, angleToPulse(BL_A +x));//A
+  myServo.setPWM(10, 0, angleToPulse(BL_C));//C
+  delay(500);
   }
-  Serial.println("90 deg");
-  delay(2000);
-  for (uint16_t pulselen =  angleToPulse(90); pulselen >  angleToPulse(0); pulselen--){
-    myServo.setPWM(servonum, 0, pulselen);
+}
+void movethree2(){
+  for(int x=-15;x<=15;x+=15){
+  //BOTTOMRIGHT // correct
+  myServo.setPWM(4, 0, angleToPulse(BR_B ));//B
+  myServo.setPWM(5, 0, angleToPulse(BR_A -x));//A
+  myServo.setPWM(6, 0, angleToPulse(BR_C));//C
+
+  
+  //bottomleft
+  myServo.setPWM(8, 0, angleToPulse(BL_B));//B
+  myServo.setPWM(9, 0, angleToPulse(BL_A +x));//A
+  myServo.setPWM(10, 0, angleToPulse(BL_C));//C
+
+  
+  //top left
+  myServo.setPWM(12, 0, angleToPulse(TL_B));//B
+  myServo.setPWM(13, 0, angleToPulse(TL_A +x));//A
+  myServo.setPWM(14, 0, angleToPulse(TL_C));//C
   }
-  Serial.println("0 deg");
-  delay(2000);
+}
+void hpushup(){
   
 }
 int angleToPulse(int ang){
    int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
    return pulse;
+}
+
+float getdegree(float r){
+    return r*(180.0/pie);
+}
+
+void setangle(float side){
+    b=side;//COSINE RULE 
+
+    A=acos((pow(c,2)+pow(b,2)-pow(a,2))/(2*c*b));
+    A=getdegree(A);
+    A=floor(A)+70;
+
+    B=acos((pow(a,2)+pow(c,2)-pow(b,2))/(2*a*c));
+    B=getdegree(B);
+    B=B/2+30;
+
+    C=140;
 }
