@@ -17,7 +17,7 @@ Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
 #define TR_C 70
 
 #define BR_B 55
-#define BR_A 15
+#define BR_A 20
 #define BR_C 55
 
 #define BL_B 45 //55
