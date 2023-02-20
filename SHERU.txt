@@ -9,24 +9,24 @@ Adafruit_PWMServoDriver myServo = Adafruit_PWMServoDriver();
 #define pie 3.14159
 #define STOP 20
 #define MEX 18
-#define MIIN -18
+#define MIIN -8
 
 //ANGLE FOR EACH
-#define TR_B 55
+#define TR_B 50
 #define TR_A 35
 #define TR_C 70
 
 #define BR_B 55
-#define BR_A 20
+#define BR_A 25
 #define BR_C 55
 
-#define BL_B 45 //55
+#define BL_B 55 //55
 #define BL_A 100
 #define BL_C 80
 
 #define TL_B 45
 #define TL_A 95
-#define TL_C 95
+#define TL_C 115
 
 float a=130.0,b,c=130.0,A,B,C;
 
@@ -43,14 +43,6 @@ void loop() {
    pushup();
 //    equilibrium();
 //   movefront();
-//   for(float i=MIIN;i<MEX;i++){  
-//     delay(50);
-//     hpush(i);
-//  }
-//  for(float i=MEX;i>MIIN;i--){
-//     delay(50);
-//     hpush(i);
-//  }
 }
 
 void hpush(int x){
